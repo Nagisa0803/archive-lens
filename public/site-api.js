@@ -223,7 +223,8 @@ function view(id) {
         ...c,
         characterId: cid,
         characterName: name(cid),
-        image: url ? { ...image, url } : allowOnlinePreviews && cardCatalog.cards[c.cardId] ? { ...cardCatalog.cards[c.cardId], url: "/" + cardCatalog.cards[c.cardId].file } : null,
+        cardName: cardCatalog.cards[c.cardId]?.name || c.cardName || c.name || c.cardId,
+        image: url ? { ...image, url } : allowOnlinePreviews && cardCatalog.cards[c.cardId]?.file ? { ...cardCatalog.cards[c.cardId], url: "/" + cardCatalog.cards[c.cardId].file } : null,
       };
     });
   const mediaIndex = structuredClone(s.mediaIndex || {});
@@ -432,7 +433,7 @@ async function attachCardMedia(snapshot, files) {
       const packed = snapshot.mediaIndex.cards[card.cardId];
       if (packed?.file && files["media/" + packed.file]) { saved++; return; }
       const image = cardCatalog.cards[card.cardId];
-      if (!image || !allowOnlinePreviews) return;
+      if (!image?.file || !allowOnlinePreviews) return;
       const response = await fetch("./" + image.file);
       if (!response.ok) throw Error("Card thumbnail download failed");
       const bytes = new Uint8Array(await response.arrayBuffer());

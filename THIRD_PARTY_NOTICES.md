@@ -5,3 +5,5 @@
 - 不包含用户帐号数据或私人照片文件。
 
 - GitHub mark icon: Primer Octicons, MIT. See `public/vendor/octicons-LICENSE.txt`.
+
+- Card title mappings: [INFO PRIDE CCID table](https://github.com/outloudvi/info-pride/blob/master/data/ccid/ccid.json), original Japanese game titles. Dataset attribution: [CC BY-NC-SA 3.0](https://creativecommons.org/licenses/by-nc-sa/3.0/), as documented by INFO PRIDE. Only generic card IDs/titles are included; no account ownership. Card IDs without a known title remain visible.

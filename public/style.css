@@ -20,3 +20,5 @@
 @media(max-width:760px){.top-actions .button{white-space:normal;overflow-wrap:anywhere;min-height:44px}.top-actions .github-link{flex-shrink:0}.page-heading{flex-wrap:wrap}}
 
 .full-backup-warning{padding:14px 16px;border:1px solid #edc98f;border-radius:9px;background:#fff6e8;color:#966018;font-size:12px;line-height:1.8;font-weight:550}
+
+.card-name{line-height:1.5;overflow-wrap:anywhere}.card-character{margin-top:4px;font-size:11px;color:#6c7894}

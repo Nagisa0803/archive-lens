@@ -1,4 +1,6 @@
 export const UI_COPY={
+"按卡牌名、人物、卡牌 ID、稀有度查找拥有的卡牌。":["Find owned cards by card title, character, card ID or rarity.", "カード名・キャラクター・カードID・レアリティで所持カードを検索。", "카드명, 캐릭터, 카드 ID 또는 희귀도로 보유 카드를 검색합니다."],"搜索卡牌名、人物或卡牌 ID":["Search card title, character or card ID", "カード名・キャラクター・カードIDを検索", "카드명, 캐릭터 또는 카드 ID 검색"],
+
   "概览": [
     "Overview",
     "概要",
