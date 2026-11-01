@@ -1,0 +1,13 @@
+{
+  "name": "archive-lens",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Browser-local IDOLY PRIDE archive viewer and export guide.",
+  "scripts": {
+    "dev": "node scripts/restore-assets.mjs && node scripts/serve.mjs",
+    "check": "node scripts/check-public.mjs",
+    "build": "node scripts/restore-assets.mjs && npm run check && npm run test:privacy",
+    "test:privacy": "node tests/privacy-export.mjs"
+  }
+}

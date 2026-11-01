@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import {unzipSync,zipSync,strToU8,strFromU8} from '../public/vendor/fflate.js';
+const root=new URL('../public/',import.meta.url),nativeFetch=globalThis.fetch,requests=[];
+globalThis.document=new EventTarget();
+globalThis.fetch=async input=>{const value=String(input);if(value.startsWith('blob:'))return nativeFetch(value);requests.push(value);if(value==='./wardrobe/characters.json'||value==='./wardrobe/catalog.json'||value.startsWith('./wardrobe/images/'))return new Response(await readFile(new URL(value.slice(2),root)));throw Error('Unexpected network request: '+value)};
+const {api,setOnlinePreviews}=await import('../public/site-api.js');
+const catalog=JSON.parse(await readFile(new URL('wardrobe/catalog.json',root),'utf8'));
+const costumeId=Object.keys(catalog.costumes).find(id=>catalog.costumes[id].image);
+const snapshot=()=>({format:'idoly-account-snapshot/v1',scope:'Account',legacyCredential:'SYNTHETIC_CREDENTIAL_NOT_REAL',userData:{userPublic:{serverUserId:'DEMOONLY'},user:{name:'Synthetic'},cards:[],characters:[],costumes:[]}});
+async function exportFiles(id){const result=await api('/api/accounts/'+id+'/export',{});const bytes=new Uint8Array(await (await nativeFetch(result.url)).arrayBuffer());return unzipSync(bytes)}
+const malicious=snapshot();const originalRaw=new Uint8Array([8,1,248,255,4,1]);
+const original={'account.json':strToU8(JSON.stringify(malicious)),'.env':strToU8('SYNTHETIC_SECRET=not-real'),'credentials.json':strToU8('{"synthetic":true}'),'raw/user.pb':originalRaw};
+const account=await api('/api/import',{},new Blob([zipSync(original)]));let files=await exportFiles(account.id),manifest=JSON.parse(strFromU8(files['manifest.json']));
+assert.equal(manifest.credentialsIncluded,null);assert.equal(manifest.credentialAssessment,'not-assessed');assert.equal(manifest.exportMode,'full-backup');assert.equal(manifest.safeToShare,false);assert.equal(manifest.containsPersonalData,true);
+assert.equal(strFromU8(files['.env']),strFromU8(original['.env']));assert.equal(strFromU8(files['credentials.json']),strFromU8(original['credentials.json']));assert.deepEqual(files['raw/user.pb'],originalRaw);assert.equal(JSON.parse(strFromU8(files['account.json'])).legacyCredential,malicious.legacyCredential);
+const ordinary=snapshot();ordinary.userData.costumes=[{costumeId}];const second=await api('/api/import',{},new Blob([JSON.stringify(ordinary)]));const before=requests.length;
+assert.equal((await api('/api/accounts/'+second.id)).wardrobe.costumes[0].image,null);await exportFiles(second.id);assert.equal(requests.length,before,'Default import/view/export must not request owned thumbnails');
+setOnlinePreviews(true);assert.ok((await api('/api/accounts/'+second.id)).wardrobe.costumes[0].image.url.startsWith('/wardrobe/images/'));await exportFiles(second.id);assert.ok(requests.slice(before).some(x=>x.startsWith('./wardrobe/images/')));
+setOnlinePreviews(false);const packed=snapshot();packed.userData.costumes=[{costumeId}];packed.mediaIndex={costumes:{[costumeId]:{file:'demo.webp',assetId:catalog.costumes[costumeId].assetId}}};const image=await readFile(new URL(catalog.costumes[costumeId].image.file,root));const packedFiles={'account.json':strToU8(JSON.stringify(packed)),'media/demo.webp':image};const third=await api('/api/import',{},new Blob([zipSync(packedFiles)]));const requestCount=requests.length;assert.ok((await api('/api/accounts/'+third.id)).wardrobe.costumes[0].image.url.startsWith('blob:'));await exportFiles(third.id);assert.equal(requests.length,requestCount);
+console.log('Privacy regression passed: full-backup preservation with unknown credentials; no default owned-image requests; explicit opt-in only; bundled images work offline. Synthetic data only.');
