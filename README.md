@@ -21,7 +21,7 @@
   <img src="docs/images/guide-mobile.png" width="27%" alt="English export and import handbook on a mobile screen">
 </p>
 
-*Gallery preview uses explicit online-thumbnail opt-in; the default uses bundled images only. Screenshots use a fictional demo and generic game thumbnails. No real account, ownership data, credentials or private photo links are published.*
+*Online generic thumbnails are enabled by default and can be turned off to use bundled images only. Screenshots use a fictional demo and generic game thumbnails. No real account, ownership data, credentials or private photo links are published.*
 
 ## Features
 
@@ -65,7 +65,7 @@ Open `http://127.0.0.1:8793/` or `/guide/`. Add `?lang=en`, `zh`, `ja` or `ko` t
 
 ## Privacy & limits
 
-- **Local processing:** imported files stay in the current browser session. No account POST upload, localStorage or IndexedDB persistence; refreshing clears the imported state. Generic metadata still loads from Cloudflare. Online item thumbnails are **off by default**; enabling them can reveal viewed items through hosting logs. Opening a photo link contacts its provider.
+- **Local processing:** imported files stay in the current browser session. No account POST upload, localStorage or IndexedDB persistence; refreshing clears the imported state. Generic metadata still loads from Cloudflare. Online item thumbnails are **on by default** and can reveal viewed items through hosting logs; turn them off to use only images bundled in your ZIP. Opening a photo link contacts its provider.
 - **Public source only:** the repository contains generic code, definitions and thumbnails. Never commit real snapshots, ownership sets, private photo URLs, ZIPs, device data, passwords, authentication tokens or TLS keys.
 - **Private full backups:** re-export preserves imported fields, raw protobuf and extra attachments. They may contain credentials or personal data; `credentialsIncluded` is unknown, not a credential-free guarantee. Keep these ZIPs private; no sanitized sharing mode is claimed.
 - **Honest coverage:** a saved User/Get response does not prove complete photo-original, message, phone or other independent-history coverage. Missing links are not guessed. URL export is not a full photo backup, and ZIP import does not restore an account into the official game.

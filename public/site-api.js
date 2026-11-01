@@ -24,7 +24,7 @@ const names = {
   suz: "成宮 すず",
   yu: "鈴村 優",
 };
-let allowOnlinePreviews = false;
+let allowOnlinePreviews = true;
 export function setOnlinePreviews(value) {
   allowOnlinePreviews = value === true;
   document.dispatchEvent(new CustomEvent("archive-thumbnail-policy-change"));
