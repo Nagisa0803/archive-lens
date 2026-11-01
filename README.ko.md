@@ -1,5 +1,7 @@
 # Archive Lens
 
+[![Powered by Cloudflare](https://img.shields.io/badge/Powered%20by-Cloudflare-F38020?logo=cloudflare&logoColor=white)](https://archive-lens.chiyoda-site.workers.dev/)
+
 [English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 IDOLY PRIDE 계정 백업을 브라우저에서 로컬로 보는 도구입니다. 영어, 중국어, 일본어, 한국어를 지원하며 기본 언어는 영어입니다.

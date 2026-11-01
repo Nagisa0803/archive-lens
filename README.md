@@ -1,5 +1,7 @@
 # Archive Lens
 
+[![Powered by Cloudflare](https://img.shields.io/badge/Powered%20by-Cloudflare-F38020?logo=cloudflare&logoColor=white)](https://archive-lens.chiyoda-site.workers.dev/)
+
 [![Live viewer](https://img.shields.io/badge/viewer-live-6266e8)](https://archive-lens.chiyoda-site.workers.dev/) ![Browser local](https://img.shields.io/badge/processing-browser--local-2a9d8f) ![Languages](https://img.shields.io/badge/languages-EN%20%7C%20ZH%20%7C%20JA%20%7C%20KO-707b99)
 
 [English](README.md) · [Simplified Chinese](README.zh-CN.md) · [Japanese](README.ja.md) · [Korean](README.ko.md)

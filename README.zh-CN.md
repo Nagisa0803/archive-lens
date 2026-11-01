@@ -1,5 +1,7 @@
 # Archive Lens
 
+[![Powered by Cloudflare](https://img.shields.io/badge/Powered%20by-Cloudflare-F38020?logo=cloudflare&logoColor=white)](https://archive-lens.chiyoda-site.workers.dev/)
+
 [English](README.md) · [简体中文](README.zh-CN.md) · [日本語](README.ja.md) · [한국어](README.ko.md)
 
 在浏览器本地查看 IDOLY PRIDE 帐号备份，支持英中日韩切换，默认英语。
