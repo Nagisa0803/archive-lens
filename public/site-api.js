@@ -6,6 +6,10 @@ const wardrobeCatalog = await fetch("./wardrobe/catalog.json").then((r) => {
   return r.json();
 });
 import { unzipSync, zipSync, strToU8, strFromU8 } from "./vendor/fflate.js";
+const cardCatalog = await fetch("./cards/catalog.json").then((r) => {
+  if (!r.ok) throw Error("Card preview catalog unavailable");
+  return r.json();
+});
 const names = {
   ai: "小美山 愛",
   aoi: "井川 葵",
@@ -219,7 +223,7 @@ function view(id) {
         ...c,
         characterId: cid,
         characterName: name(cid),
-        image: url ? { ...image, url } : null,
+        image: url ? { ...image, url } : allowOnlinePreviews && cardCatalog.cards[c.cardId] ? { ...cardCatalog.cards[c.cardId], url: "/" + cardCatalog.cards[c.cardId].file } : null,
       };
     });
   const mediaIndex = structuredClone(s.mediaIndex || {});
@@ -418,12 +422,36 @@ async function attachWardrobeMedia(entry, files) {
   return snapshot;
 }
 
+async function attachCardMedia(snapshot, files) {
+  snapshot.mediaIndex ||= {};
+  snapshot.mediaIndex.cards ||= {};
+  let saved = 0;
+  const owned = rows(snapshot.userData, "cards");
+  for (let start = 0; start < owned.length; start += 6) {
+    await Promise.all(owned.slice(start, start + 6).map(async (card) => {
+      const packed = snapshot.mediaIndex.cards[card.cardId];
+      if (packed?.file && files["media/" + packed.file]) { saved++; return; }
+      const image = cardCatalog.cards[card.cardId];
+      if (!image || !allowOnlinePreviews) return;
+      const response = await fetch("./" + image.file);
+      if (!response.ok) throw Error("Card thumbnail download failed");
+      const bytes = new Uint8Array(await response.arrayBuffer());
+      if (bytes.length < 12 || String.fromCharCode(...bytes.slice(0, 4)) !== "RIFF" || String.fromCharCode(...bytes.slice(8, 12)) !== "WEBP") throw Error("Invalid card preview image");
+      files["media/" + image.file] = bytes;
+      snapshot.mediaIndex.cards[card.cardId] = { ...image };
+      saved++;
+    }));
+  }
+  snapshot.coverage.cardPreviews = { records: owned.length, saved, missing: owned.length - saved };
+}
+
 async function exported(id) {
   const entry = entries.get(id),
     source = await filesFor(entry);
   const files = { ...source };
   delete files["manifest.json"];
   const snapshot = await attachWardrobeMedia(entry, files);
+  await attachCardMedia(snapshot, files);
   files["account.json"] = strToU8(JSON.stringify(snapshot, null, 2));
   const hashes = {};
   for (const [n, b] of Object.entries(files))

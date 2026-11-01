@@ -42,4 +42,4 @@ refreshAccounts().catch(e=>{toast(e.message);$('#main').replaceChildren(el('div'
 
 installLanguagePicker(document.querySelector('.top-actions'));document.addEventListener('archive-language-change',()=>{render();translateDocument()});translateDocument();
 
-document.addEventListener('archive-thumbnail-policy-change',()=>{render();translateDocument()});
+document.addEventListener('archive-thumbnail-policy-change',async()=>{if(state.account)state.account=await api('/api/accounts/'+state.account.summary.id);render();translateDocument()});

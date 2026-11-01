@@ -27,11 +27,11 @@
 
 | Explore | What you can do |
 | --- | --- |
-| Cards & characters | Browse saved cards; open a character to see all their owned cards, then inspect a card. Artwork appears when included in the backup. |
+| Cards & characters | Browse saved cards; open a character to see all their owned cards, then inspect a card. Uses packed artwork first, with generic card previews when online previews are enabled. |
 | Teams & resources | Inspect saved formations, inventory and original account records. |
 | Costumes & hairstyles | Search thumbnails, filter by character and enlarge previews. Additional hairstyles and costume-default records stay separate. |
 | Photos | Export available original/thumbnail URL mappings as JSON, CSV or TXT; import matching supplemental link JSON. |
-| Portable archives | Import ZIP or User/Get JSON and re-export ZIP with saved data and available media. |
+| Portable archives | Import ZIP or User/Get JSON and re-export ZIP with saved data, available media and loaded generic card previews. |
 | Desktop & mobile | Switch between English, Chinese, Japanese and Korean. English is the default; the searchable handbook explains each step. |
 
 ## Quick start
